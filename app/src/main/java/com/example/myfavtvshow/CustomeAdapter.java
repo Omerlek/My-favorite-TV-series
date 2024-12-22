@@ -11,13 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHolder> {
 
-    private ArrayList<DataModel> dataSet;
-    private ArrayList<DataModel> filteredList;
+    private final List<DataModel> dataSet;
+    private final List<DataModel> filteredList;
 
-    public CustomeAdapter(ArrayList<DataModel> dataSet) {
+    public CustomeAdapter(List<DataModel> dataSet) {
         this.dataSet = dataSet;
         this.filteredList = new ArrayList<>(dataSet);
     }
@@ -38,9 +39,8 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
 
     @NonNull
     @Override
-    public CustomeAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardrows, parent, false);
-
         return new MyViewHolder(view);
     }
 
@@ -52,15 +52,13 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
         holder.textViewVersion.setText(currentItem.getVersion());
         holder.imageView.setImageResource(currentItem.getImage());
 
-        holder.itemView.setOnClickListener(v -> {
-
-            Toast.makeText(v.getContext(), "נבחרה דמות: " + currentItem.getName(), Toast.LENGTH_SHORT).show();
-        });
+        holder.itemView.setOnClickListener(v ->
+                Toast.makeText(v.getContext(), "נבחרה דמות: " + currentItem.getName(), Toast.LENGTH_SHORT).show()
+        );
     }
 
-
+    @Override
     public int getItemCount() {
-
         return filteredList.size();
     }
 
@@ -68,8 +66,7 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
         filteredList.clear();
         if (query.isEmpty()) {
             filteredList.addAll(dataSet);
-        }
-        else {
+        } else {
             for (DataModel item : dataSet) {
                 if (item.getName().toLowerCase().contains(query.toLowerCase())) {
                     filteredList.add(item);
@@ -78,9 +75,4 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
         }
         notifyDataSetChanged();
     }
-
-
-
-
 }
-
